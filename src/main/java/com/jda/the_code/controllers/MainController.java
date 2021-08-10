@@ -3,6 +3,7 @@ package com.jda.the_code.controllers;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,27 @@ public class MainController {
 
 	@RequestMapping("/")
 	public String index() {
-		return "index.jsp";
+		return "idx.jsp";
 	}
 
+	@RequestMapping(value="/submit", method=RequestMethod.POST)
+	public String submit(@RequestParam(value="name") String name, 
+			@RequestParam(value="location") String location,
+			@RequestParam(value="language") String language,
+			@RequestParam(value="comment") String comment, 
+			HttpSession session) {
+		session.setAttribute("name", name);
+		session.setAttribute("location", location);
+		session.setAttribute("language", language);
+		session.setAttribute("comment", comment);
+		return "redirect:/result";
+	}
+	
+	@RequestMapping("/result")
+	public String result() {
+		return "result.jsp";
+	}
+	
 	@RequestMapping(value="/guess", method=RequestMethod.POST)
 	public String guess(@RequestParam(value="code") String code,
 			RedirectAttributes redirectAttributes, HttpSession session) {
